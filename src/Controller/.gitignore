@@ -1,0 +1,11 @@
+use Symfony\Component\Routing\Annotation\Route;
+// ...
+
+class BookingController extends AbstractController
+{
+    #[Route('/booking', name: 'app_booking')]
+    public function index(): Response
+    {
+        // Your code here
+    }
+}
