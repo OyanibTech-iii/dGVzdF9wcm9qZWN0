@@ -19,3 +19,8 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+# Sensitive credential backup files
+/credential.bak
+*.bak
+

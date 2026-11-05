@@ -17,16 +17,17 @@ By default, the application can run immediately without a database connection us
 5. [Full Setup and Installation Guide](#full-setup-and-installation-guide)
    - [Step 1: Clone or Navigate to the Project](#step-1-clone-or-navigate-to-the-project)
    - [Step 2: Install PHP Dependencies](#step-2-install-php-dependencies)
-   - [Step 3: Configure Environment Variables](#step-3-configure-environment-variables)
+   - [Step 3: Configure Environment Variables and Credentials](#step-3-configure-environment-variables-and-credentials)
    - [Step 4: Install Frontend Assets](#step-4-install-frontend-assets)
    - [Step 5: Database Setup (Optional for Demo Mode)](#step-5-database-setup-optional-for-demo-mode)
    - [Step 6: Start the Local Development Server](#step-6-start-the-local-development-server)
-6. [Application Routes and Endpoints](#application-routes-and-endpoints)
+6. [Demo Accounts (Placeholders)](#demo-accounts-placeholders)
+7. [Application Routes and Endpoints](#application-routes-and-endpoints)
    - [Public Storefront Routes](#public-storefront-routes)
    - [Administrative Dashboard Routes](#administrative-dashboard-routes)
-7. [Running Automated Tests](#running-automated-tests)
-8. [Troubleshooting](#troubleshooting)
-9. [License](#license)
+8. [Running Automated Tests](#running-automated-tests)
+9. [Troubleshooting](#troubleshooting)
+10. [License](#license)
 
 ---
 
@@ -119,6 +120,7 @@ symfony/
 ├── var/                        # Generated cache, logs, and shared runtime files
 ├── compose.yaml                # Docker Compose configuration for PostgreSQL
 ├── composer.json               # PHP package dependencies and scripts
+├── credential.bak              # Local backup of sensitive credentials (git-ignored)
 ├── importmap.php               # Frontend JavaScript importmap definitions
 └── phpunit.dist.xml            # PHPUnit configuration
 ```
@@ -134,7 +136,7 @@ Follow these steps to configure and run the Symfony application locally.
 Open a terminal (PowerShell, Command Prompt, or Bash) and navigate to the `symfony` directory inside the workspace:
 
 ```bash
-cd c:\Users\pacif\shaina\symfony
+cd <path_to_workspace>/symfony
 ```
 
 ### Step 2: Install PHP Dependencies
@@ -145,32 +147,32 @@ Install all required vendor packages and trigger Symfony Flex auto-scripts using
 composer install
 ```
 
-### Step 3: Configure Environment Variables
+### Step 3: Configure Environment Variables and Credentials
 
-The repository includes a default `.env` file. To customize settings for your local machine without modifying committed files, create a `.env.local` file:
+All actual sensitive values, secrets, and default credentials are stored locally in `credential.bak` (which is excluded from version control via `.gitignore`). Never commit real secrets or passwords to `.env` or `README.md`.
 
-```bash
-cp .env .env.local
-```
+1. Create a `.env.local` file from the default `.env` template:
+   ```bash
+   cp .env .env.local
+   ```
 
-Open `.env.local` and ensure `APP_SECRET` is set to a secure random string:
+2. Open `.env.local` and replace the placeholders below with your actual values from `credential.bak`:
+   ```dotenv
+   APP_ENV=<YOUR_APP_ENV>
+   APP_SECRET=<YOUR_APP_SECRET>
+   DEFAULT_URI=<YOUR_DEFAULT_URI>
+   ```
 
-```dotenv
-APP_ENV=dev
-APP_SECRET=your_custom_32_character_secret_key_here
-DEFAULT_URI=http://localhost:8000
-```
+3. If connecting a database, configure `DATABASE_URL` in `.env.local` using the placeholders below:
 
-If you plan to connect a database (optional for initial UI and functional testing, as `SalonService` and `AdminService` provide built-in sample data out of the box), configure `DATABASE_URL` in `.env.local`:
-
-- **For PostgreSQL (default in `.env`)**:
-  ```dotenv
-  DATABASE_URL="postgresql://app:!ChangeMe!@127.0.0.1:5432/app?serverVersion=16&charset=utf8"
-  ```
-- **For MySQL / MariaDB (e.g., XAMPP)**:
-  ```dotenv
-  DATABASE_URL="mysql://root:@127.0.0.1:3306/truno_beauty_salon?serverVersion=8.0.32&charset=utf8mb4"
-  ```
+   - **For PostgreSQL**:
+     ```dotenv
+     DATABASE_URL="postgresql://<DB_USER>:<DB_PASSWORD>@<DB_HOST>:<DB_PORT>/<DB_NAME>?serverVersion=<POSTGRES_VERSION>&charset=utf8"
+     ```
+   - **For MySQL / MariaDB**:
+     ```dotenv
+     DATABASE_URL="mysql://<DB_USER>:<DB_PASSWORD>@<DB_HOST>:<DB_PORT>/<DB_NAME>?serverVersion=<MYSQL_VERSION>&charset=utf8mb4"
+     ```
 
 ### Step 4: Install Frontend Assets
 
@@ -187,7 +189,8 @@ The application is pre-configured with in-memory service providers (`App\Service
 
 If you are developing persistent Doctrine entities and want to start the database:
 
-1. **Using Docker Compose (PostgreSQL 16)**:
+1. **Using Docker Compose (PostgreSQL)**:
+   Ensure your environment variables (`POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`) are set from `credential.bak`, then run:
    ```bash
    docker compose up -d
    ```
@@ -220,6 +223,21 @@ php -S localhost:8000 -t public
 Once the server is running, access the application at:
 - **Public Storefront**: `http://localhost:8000/`
 - **Admin Dashboard**: `http://localhost:8000/dashboard`
+
+---
+
+## Demo Accounts (Placeholders)
+
+Actual demo credentials for testing are stored in `credential.bak` (git-ignored). Refer to `credential.bak` for the values corresponding to these placeholders:
+
+### Admin Account
+- **Username**: `<ADMIN_USERNAME>`
+- **Email**: `<ADMIN_EMAIL>`
+- **Password**: `<ADMIN_PASSWORD>`
+
+### Customer Account
+- **Email**: `<CUSTOMER_EMAIL>`
+- **Password**: `<CUSTOMER_PASSWORD>`
 
 ---
 
